@@ -119,15 +119,11 @@ public class NullSafeTypeAdapterFactory implements TypeAdapterFactory {
 
     private void checkFieldNotNull(Field field, Object obj) {
         if (getFieldValue(field, obj) == null) {
-            fieldIsNull(field);
+            throw new JsonParseException(
+                    format("Field %s of %s is null after deserialization",
+                            field.getName(),
+                            field.getType()));
         }
-    }
-
-    private void fieldIsNull(Field field) {
-        throw new JsonParseException(
-                format("Field %s of %s is null after deserialization",
-                        field.getName(),
-                        field.getType()));
     }
 
     private class NullSafeNullableTypeAdapter<T> extends TypeAdapter<T> {
